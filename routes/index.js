@@ -3,11 +3,12 @@
  * GET home page.
  */
 
-// ÉçÉOÉCÉìâÊñ ï\é¶
+// „É≠„Ç∞„Ç§„É≥Ë°®Á§∫
 exports.login = function(req, res){
   res.render('login', {});
 };
 
+// „É≠„Ç∞„Ç§„É≥Ë°®Á§∫„ÄÄ‚Üí„ÄÄ
 exports.loginpost = function(request, response){
     var pg = require('pg');
     var connectionString = process.env.DATABASE_URL
@@ -23,13 +24,13 @@ exports.loginpost = function(request, response){
             rows.push(row);
         });
         query.on('end', function(row,err) {
-        	if (rows.length == 0) {
-        		response.render('index_org3', { 
+            if (rows.length === 0){
+                response.render('index_org3', { 
                 title: 'Express',
                 data:rows
-           		 });
+                });
             } else {
-            response.render('index_org2', { 
+                response.render('index_org2', { 
                 title: 'Express',
                 data:rows
             });
@@ -38,7 +39,6 @@ exports.loginpost = function(request, response){
         query.on('error', function(error) {
             console.log("ERROR!!" + error);
             response.render('index_org2', {
-                title: title,
                 data: null,
                 message: "ERROR is occured!"
             });
@@ -61,12 +61,12 @@ exports.createpost = function(request, response){
     pg.connect(connectionString, function(err, client) {
         var query = client.query('INSERT INTO user_account(user_id, user_name, password, postcode, address, email, job, birthday) values ( $1, \'a\', $2, \'a\', \'a\', \'a\', \'a\', \'20130101\')',
          [name, pass], function(err, result){
-         	if (err){
-         		console.log("error. test.");
-         	}else{
-         		// ÉÜÅ[ÉUàÍóóâÊñ Çï\é¶Ç∑ÇÈÅB
-         		response.redirect('/display_all');
-         	}
+            if (err){
+                console.log("error. test.");
+            }else{
+                // ÔøΩÔøΩÔøΩ[ÔøΩUÔøΩÍóóÔøΩÔøΩÔøΩ ÇÔøΩÔøΩ\ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩB
+                response.redirect('/display_all');
+            }
         });
     });
 };
@@ -86,15 +86,14 @@ exports.display = function(req, res){
             rows.push(row);
         });
         query.on('end', function(row,err) {
-        		res.render('display_all', { 
+                res.render('display_all', { 
                 title: 'Express',
                 data:rows
-           		 });
+                });
             });
         query.on('error', function(error) {
             console.log("ERROR!!" + error);
-            response.render('index_org2', {
-                title: title,
+                res.render('index_org2', {
                 data: null,
                 message: "ERROR is occured!"
             });
