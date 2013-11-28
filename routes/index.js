@@ -20,9 +20,11 @@ exports.loginpost = function(request, response){
     pg.connect(connectionString, function(err, client) {
         var query = client.query('select * from user_account where user_name = $1 and password = $2', [name, pass]);
         var rows = [];
+        
         query.on('row', function(row) {
             rows.push(row);
         });
+        
         query.on('end', function(row,err) {
             if (rows.length === 0){
                 response.render('index_org3', { 
@@ -35,7 +37,12 @@ exports.loginpost = function(request, response){
                 data:rows
             });
             }
+            request.session.user = {
+                name: name,
+                pass: pass
+            };
         });
+        
         query.on('error', function(error) {
             console.log("ERROR!!" + error);
             response.render('index_org2', {
